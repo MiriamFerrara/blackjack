@@ -1,0 +1,229 @@
+/* App.css */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom, #001f3f, #003366);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.App {
+  text-align: center;
+  padding: 20px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.logo, .logo-start {
+  width: 200px;
+  margin-bottom: 20px;
+}
+
+.slot-container {
+  border: 4px solid #444;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px auto;
+  background-color: #111;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  min-width: 300px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.setup-box {
+  background: rgba(0, 51, 102, 0.9);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.setup-box h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.setup-box label {
+  display: block;
+  margin: 10px 0;
+  text-align: left;
+}
+
+.setup-box input,
+.setup-box select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  margin-top: 5px;
+}
+
+.setup-box button {
+  margin-top: 20px;
+  padding: 10px 30px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background-color: #00aced;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.setup-box button:hover {
+  background-color: #007bb5;
+}
+
+.message {
+  font-size: 18px;
+  margin: 15px 0;
+  background-color: #004080;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #00264d;
+
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+
+.slot {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  gap: 10px;
+}
+
+.reel-box {
+  font-size: 50px;
+  width: 80px;
+  height: 80px;
+  background-color: #00264d;
+  border: 2px solid #0059b3;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: spin 0.5s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 153, 255, 0.3);
+}
+
+@keyframes spin {
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(180deg); }
+  100% { transform: rotateX(360deg); }
+}
+
+.spin-btn {
+  padding: 12px 40px;
+  font-size: 20px;
+  background-color: #00bfff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.spin-btn:hover {
+  background-color: #0099cc;
+}
+
+.controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.controls button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background-color: #0066cc;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.controls button:hover {
+  background-color: #004d99;
+}
+
+.legend {
+  margin-top: 20px;
+  text-align: left;
+  font-size: 14px;
+  background-color: rgba(0, 0, 51, 0.6);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+   margin-top: 0px;
+}
+
+.legend h3 {
+  margin-bottom: 10px;
+}
+
+.legend table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.legend th, .legend td {
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid #004080;
+}
+
+.legend th {
+  color: #66ccff;
+}
+
+.how-to-play {
+  background-color: #0f1c2e;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #66ccff50;
+  margin-top: 20px;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+
+.how-to-play h3 {
+  margin-top: 0;
+  color: #66ccff;
+  font-size: 22px;
+}
+
+.how-to-play h4 {
+  margin-bottom: 4px; /* o anche 2px se vuoi uno spazio ancora più stretto */
+}
+
+.how-to-play ul {
+  padding-left: 50px;
+  margin-bottom: 5px;
+  margin-top: 0;
+}
+
+.how-to-play ul li {
+  margin-bottom: 3px;
+}
+
+.spacer {
+  height: 40px;
+}
