@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import logo from './image/logo-slot.png';
+import logo from './image/logo-slot-b.png';
 
 const symbolData = {
   '🍒': { name: 'Ciliegia', prize: 10, rarity: 'Molto comune' },
