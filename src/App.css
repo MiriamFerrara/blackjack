@@ -1,20 +1,20 @@
-/* App.css */
+/* === IMPOSTAZIONI GLOBALI === */
 * {
-  box-sizing: border-box;
+  box-sizing: border-box; /* Include padding e bordo nel calcolo delle dimensioni */
 }
-
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to bottom, #003366);
-  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font moderno e leggibile */
+  background: linear-gradient(to bottom, #003366); /* Sfondo con sfumatura blu scuro */
+  color: #fff; /* Testo bianco */
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 100vh; /* Almeno altezza pieno schermo */
   overflow-x: hidden;
 }
 
+/* === CONTENITORE PRINCIPALE DELL'APP === */
 .App {
   text-align: center;
   padding: 20px;
@@ -22,315 +22,214 @@ body {
   width: 100%;
 }
 
+/* === LOGO SIA IN GIOCO CHE INIZIO === */
 .logo, .logo-start {
   width: 200px;
   margin-bottom: 20px;
 }
 
+/* === CONTENITORE SLOT PRINCIPALE === */
 .slot-container {
-  border: 4px solid #07B5E2;
+  border: 4px solid #07B5E2; /* Bordo azzurro brillante */
   border-radius: 16px;
+  background: #001f33; /* Sfondo interno slot */
   padding: 20px;
-  margin: 20px auto;
-  background-color: #00183A;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  width: 100%;
-  max-width: 400px;
-  min-width: 300px;
-  overflow: hidden;
-  margin-bottom: 50px;
-}
-
-.setup-box {
-  background: rgba(0, 51, 102, 0.9);
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-}
-
-.setup-box h2 {
-  margin-top: 0;
+  box-shadow: 0 0 20px #07B5E2; /* Glow azzurro */
   margin-bottom: 20px;
 }
 
-.setup-box label {
-  display: block;
-  margin: 10px 0;
-  text-align: left;
-}
-
-.setup-box input,
-.setup-box select {
-  width: 100%;
-  padding: 8px;
-  border-radius: 8px;
-  border: none;
-  margin-top: 5px;
-}
-
-.setup-box button {
-  margin-top: 20px;
-  padding: 10px 30px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: none;
-  background-color: #00aced;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.setup-box button:hover {
-  background-color: #007bb5;
-}
-
-.message {
-  font-size: 18px;
-  background-color: #004080;
+/* === SCHERMATA INIZIALE: SETUP === */
+.setup-box {
+  background-color: #002244; /* Sfondo blu scuro */
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 0 10px #00264d;
+  box-shadow: 0 0 10px #07B5E2;
+  margin-bottom: 20px;
+}
+.setup-box h2 {
+  margin-top: 0;
+}
+.setup-box label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+.setup-box input, .setup-box select {
   width: 100%;
-  max-width: 100%;
-  overflow: hidden;
-  text-align: left;
-  margin: -20px 0 15px 0;
-  height: 70px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: left;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: none;
+}
+.setup-box button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #07B5E2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* === MESSAGGIO IN ALTO (SALDO + VINCITA) === */
+.message {
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 .message span {
-  display: block;
-  font-weight: bold;
-  margin-top: 5px;
-  transform: translateY(10px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.message span:first-child {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.message span:not(:first-child) {
+  display: inline-block;
+  margin-left: 10px;
+  transition: opacity 0.3s ease;
   opacity: 0;
 }
-
 .message span.show {
   opacity: 1;
-  transform: translateY(0);
 }
+
+/* === SALDO E COSTO DELLA GIOCATA === */
 .balance-container {
-  display: inline-block;
-  position: relative;
-  min-height: 1em; /* riserva altezza fissa */
+  margin-bottom: 20px;
 }
 .balance-row {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 8px;
-  min-height: 1.5em;
+  justify-content: space-between;
+  font-size: 18px;
 }
-
 .cost-message {
-  color: #ff4d4d;
+  color: #ff4d4d; /* Rosso per -10€, ecc. */
+  font-size: 16px;
+  margin-top: 5px;
   opacity: 0;
-  transition: opacity 0.4s ease;
-  min-width: 40px;
-  text-align: left;
+  transition: opacity 0.3s ease;
 }
-
 .cost-message.show {
   opacity: 1;
 }
 
-
-
-@keyframes fadeOut {
-  0% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(-10px); }
-}
-
-
+/* === SLOT === */
 .slot {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-  gap: 10px;
+  margin-bottom: 20px;
 }
-
 .reel-box {
-  font-size: 50px;
-  width: 80px;
-  height: 80px;
-  background-color: #00264d;
-  border: 2px solid #0059b3;
-  border-radius: 16px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  animation: spin 0.5s ease-in-out;
-  box-shadow: 0 4px 8px rgba(0, 153, 255, 0.3);
-}
-
-@keyframes spin {
-  0% { transform: rotateX(0deg); }
-  50% { transform: rotateX(180deg); }
-  100% { transform: rotateX(360deg); }
-}
-
-.spin-btn {
-  padding: 12px 100px;
-  font-size: 22px;
-  background-color: #00bfff;
-  color: black;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.spin-btn:hover {
-  background-color: #0099cc;
-}
-
-.controls {
-  margin-top: 20px;
-  display: flex;
   justify-content: center;
-  gap: 20px;
+  height: 180px;
+  overflow: hidden;
+  border: 2px solid #07B5E2;
+  border-radius: 8px;
+  background-color: #001f33;
+}
+.reel-box span {
+  font-size: 50px;
+  margin: 10px 0;
+  transition: transform 0.5s ease;
 }
 
-.controls button {
-  padding: 10px 20px;
-  border-radius: 10px;
+/* === ANIMAZIONE SLOT === */
+@keyframes spin {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+/* === PULSANTE GIRA === */
+.spin-btn {
+  background-color: #07B5E2;
   border: none;
-  background-color: #0066cc;
+  padding: 10px 30px;
+  font-size: 18px;
   color: white;
-  font-size: 16px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
+}
+.spin-btn:hover {
+  background-color: #059dc7;
 }
 
-.controls button:hover {
-  background-color: #004d99;
-}
-
-.legend {
+/* === PULSANTI ESTERNI (RESET, RICOMINCIA) === */
+.controls {
+  display: flex;
+  justify-content: space-between;
   margin-top: 20px;
-  text-align: left;
-  font-size: 14px;
-  background-color: rgba(0, 0, 51, 0.6);
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 30px;
-  margin-top: 0px;
+}
+.controls button {
+  background-color: #07B5E2;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex: 1;
+  margin: 0 10px;
 }
 
+/* === LEGENDA PREMI === */
+.legend {
+  margin-top: 30px;
+}
 .legend h3 {
   margin-bottom: 10px;
 }
-
 .legend table {
   width: 100%;
   border-collapse: collapse;
 }
-
 .legend th, .legend td {
-  padding: 6px 8px;
-  text-align: left;
-  border-bottom: 1px solid #004080;
+  border: 1px solid #07B5E2;
+  padding: 8px;
+  text-align: center;
 }
 
-.legend th {
-  color: #66ccff;
-}
-
+/* === ISTRUZIONI === */
 .how-to-play {
-  background-color: #0f1c2e;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px #66ccff50;
-  margin-top: 20px;
-  color: #e0e0e0;
-  line-height: 1.6;
+  margin-top: 30px;
+  text-align: left;
 }
-
 .how-to-play h3 {
-  margin-top: 0;
-  color: #66ccff;
-  font-size: 22px;
+  margin-bottom: 10px;
 }
-
 .how-to-play h4 {
-  margin-bottom: 4px;
+  margin-top: 20px;
 }
-
 .how-to-play ul {
-  padding-left: 50px;
+  list-style-type: disc;
+  padding-left: 20px;
+}
+.how-to-play li {
   margin-bottom: 5px;
-  margin-top: 0;
 }
 
-.how-to-play ul li {
-  margin-bottom: 3px;
-}
-
+/* === SPAZIO EXTRA VERTICALE === */
 .spacer {
   height: 40px;
 }
 
-/* Mobile responsiveness */
+/* === RESPONSIVE PER DISPOSITIVI MOBILI === */
 @media (max-width: 600px) {
-  .App {
+  .slot-container {
     padding: 10px;
   }
-
-  .slot-container {
-    padding: 15px;
-    margin: 10px auto;
-    min-width: 100%;
-  }
-
-  .setup-box,
-  .message,
-  .how-to-play,
-  .legend {
-    padding: 15px;
-    font-size: 14px;
-  }
-
-  .reel-box {
-    width: 60px;
-    height: 60px;
-    font-size: 36px;
-  }
-
   .spin-btn {
-    padding: 10px 30px;
-    font-size: 18px;
+    width: 100%;
+    padding: 10px 0;
   }
-
   .controls {
     flex-direction: column;
-    gap: 10px;
   }
-
   .controls button {
-    width: 100%;
-    font-size: 16px;
+    margin: 10px 0;
   }
-
+  .reel-box span {
+    font-size: 40px;
+  }
+  .legend table {
+    font-size: 14px;
+  }
   .logo, .logo-start {
     width: 150px;
-  }
-
-  .setup-box input,
-  .setup-box select {
-    font-size: 14px;
   }
 }
