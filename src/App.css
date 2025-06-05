@@ -1,14 +1,18 @@
 /* App.css */
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to bottom, #001f3f, #003366);
+  background: linear-gradient(to bottom, #003366);
   color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .App {
@@ -24,18 +28,18 @@ body {
 }
 
 .slot-container {
-  border: 4px solid #444;
+  border: 4px solid #07B5E2;
   border-radius: 16px;
   padding: 20px;
   margin: 20px auto;
-  background-color: #111;
+  background-color: #00183A;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   text-align: center;
   width: 100%;
   max-width: 400px;
   min-width: 300px;
   overflow: hidden;
-  box-sizing: border-box;
+  margin-bottom: 50px;
 }
 
 .setup-box {
@@ -83,20 +87,72 @@ body {
 
 .message {
   font-size: 18px;
-  margin: 15px 0;
   background-color: #004080;
-  padding: 10px;
+  padding: 20px;
   border-radius: 12px;
   box-shadow: 0 0 10px #00264d;
-
   width: 100%;
   max-width: 100%;
-  box-sizing: border-box;
-
   overflow: hidden;
-  white-space: normal;
-  text-overflow: ellipsis;
-  text-align: center;
+  text-align: left;
+  margin: -20px 0 15px 0;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+}
+.message span {
+  display: block;
+  font-weight: bold;
+  margin-top: 5px;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.message span:first-child {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.message span:not(:first-child) {
+  opacity: 0;
+}
+
+.message span.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.balance-container {
+  display: inline-block;
+  position: relative;
+  min-height: 1em; /* riserva altezza fissa */
+}
+.balance-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  min-height: 1.5em;
+}
+
+.cost-message {
+  color: #ff4d4d;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  min-width: 40px;
+  text-align: left;
+}
+
+.cost-message.show {
+  opacity: 1;
+}
+
+
+
+@keyframes fadeOut {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
 }
 
 
@@ -128,10 +184,10 @@ body {
 }
 
 .spin-btn {
-  padding: 12px 40px;
-  font-size: 20px;
+  padding: 12px 100px;
+  font-size: 22px;
   background-color: #00bfff;
-  color: white;
+  color: black;
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -172,7 +228,7 @@ body {
   padding: 15px;
   border-radius: 12px;
   margin-bottom: 30px;
-   margin-top: 0px;
+  margin-top: 0px;
 }
 
 .legend h3 {
@@ -211,7 +267,7 @@ body {
 }
 
 .how-to-play h4 {
-  margin-bottom: 4px; /* o anche 2px se vuoi uno spazio ancora più stretto */
+  margin-bottom: 4px;
 }
 
 .how-to-play ul {
@@ -226,4 +282,55 @@ body {
 
 .spacer {
   height: 40px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .App {
+    padding: 10px;
+  }
+
+  .slot-container {
+    padding: 15px;
+    margin: 10px auto;
+    min-width: 100%;
+  }
+
+  .setup-box,
+  .message,
+  .how-to-play,
+  .legend {
+    padding: 15px;
+    font-size: 14px;
+  }
+
+  .reel-box {
+    width: 60px;
+    height: 60px;
+    font-size: 36px;
+  }
+
+  .spin-btn {
+    padding: 10px 30px;
+    font-size: 18px;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .controls button {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .logo, .logo-start {
+    width: 150px;
+  }
+
+  .setup-box input,
+  .setup-box select {
+    font-size: 14px;
+  }
 }
