@@ -150,80 +150,112 @@ function App() {
 
   // RENDER: Schermata iniziale
   if (startScreen) {
-    return (
-      <div className="App">
-        <div className="legend">
-          {/* Spiegazione del gioco */}
-          <div className="how-to-play">
-            <h3>📘 Come funziona il gioco</h3>
-            {/* Istruzioni dettagliate */}
-            {/* ...contenuto accorciato per brevità */}
-          </div>
+   return (
+         <div className="App">
+         <div className="legend">
+    <div className="how-to-play">
+      <h3>📘 Come funziona il gioco</h3>
+      <h4>1. Vuoi iniziare subito?</h4>
+      <p style={{ marginTop: '4px', marginBottom: '4px' }}>
+        Premi <strong>“Inizia”</strong> senza modificare nulla. Verranno usate le impostazioni predefinite:
+      </p>
+   <ul>
+        <li>💰 Saldo iniziale: <strong>€500</strong></li>
+        <li>🎲 Modalità: <strong>casuale</strong> (una vincita ogni due giocate)</li>
+        <li>🎯 Costo per giocata: <strong>€10</strong>ogni volta che preme “SPIN”</li>
+      </ul>
 
-          {/* Legenda premi */}
-          <h3>Legenda Vincite</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Simbolo</th>
-                <th>Nome</th>
-                <th>Vincita (€)</th>
-                <th>Rarità</th>
-              </tr>
-            </thead>
-            <tbody>
-              {symbols.map((sym) => (
-                <tr key={sym}>
-                  <td>{sym}</td>
-                  <td>{symbolData[sym].name}</td>
-                  <td>{symbolData[sym].prize}€</td>
-                  <td>{symbolData[sym].rarity}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <h4><strong>Cosa succede dopo:</strong></h4>
+      <ul>
+        <li>▶ Premi <strong>“SPIN”</strong> per far partire il rullo.</li>
+        <li>🏆 Se escono 3 simboli uguali, vinci l’importo corrispondente (vedi legenda).</li>
+        <li>🎰 In modalità casuale, ogni terza giocata è vincente.</li>
+        <li>💹 Il saldo si aggiorna automaticamente dopo ogni giocata.</li>
+        <li>🔄 Se il saldo arriva a €0, viene ricaricato automaticamente a €500.</li>
+      </ul>
 
-        {/* Form impostazioni iniziali */}
-        <div className="setup-box">
-          <h2>Impostazioni iniziali</h2>
-          <label>Saldo iniziale (€):
-            <input
-              type="number"
-              value={defaultSettings.balance}
-              onChange={(e) =>
-                setDefaultSettings({ ...defaultSettings, balance: e.target.value })
-              }
-            />
-          </label>
-          <label>Modalità:
-            <select
-              value={defaultSettings.mode}
-              onChange={(e) =>
-                setDefaultSettings({ ...defaultSettings, mode: e.target.value })
-              }
-            >
-              <option value="random">Casuale</option>
-              <option value="win">Vincente</option>
-              <option value="lose">Perdente</option>
-            </select>
-          </label>
-          <label>Costo giocata (€):
-            <input
-              type="number"
-              min="1"
-              max="500"
-              value={defaultSettings.cost}
-              onChange={(e) =>
-                setDefaultSettings({ ...defaultSettings, cost: e.target.value })
-              }
-            />
-          </label>
-          <button onClick={handleStart}>Inizia</button>
-        </div>
-      </div>
-    );
-  }
+      <h4>2. Prima di iniziare vuoi impostare i parametri manualmente?</h4>
+      <ul>
+        <li><strong>Saldo iniziale:</strong> è il budget iniziale. Sale se vinci, scende se perdi.</li>
+        <li><strong>Modalità:</strong>
+          <ul>
+            <li>🏅 <strong>Vincente:</strong> vinci sempre.</li>
+            <li>💀 <strong>Perdente:</strong> perdi sempre.</li>
+            <li>⚖️ <strong>Casuale:</strong> ogni terza giocata è vincente.</li>
+          </ul>
+        </li>
+        <li><strong>Costo per giocata:</strong> quanto spendi ogni volta che premi “SPIN” (es: €10).</li>
+      </ul>
+
+      <h4>3. Durante il gioco puoi usare:</h4>
+      <ul>
+        <li><strong>🔁 Indietro:</strong> torna alla schermata iniziale per impostare tutto da capo.</li>
+        <li><strong>♻️ Ricomincia Partita:</strong> ripristina i valori predefiniti (saldo €500, modalità casuale, costo €10) senza uscire dalla slot.</li>
+      </ul>
+    </div>
+                     <h3>Legenda Vincite</h3>
+                     <table>
+                       <thead>
+                         <tr>
+                           <th>Simbolo</th>
+                           <th>Nome</th>
+                           <th>Vincita (€)</th>
+                           <th>Rarità</th>
+                         </tr>
+                       </thead>
+                       <tbody>
+                         {symbols.map((sym) => (
+                           <tr key={sym}>
+                             <td>{sym}</td>
+                             <td>{symbolData[sym].name}</td>
+                             <td>{symbolData[sym].prize}€</td>
+                             <td>{symbolData[sym].rarity}</td>
+                           </tr>
+                         ))}
+                       </tbody>
+                     </table>
+                   </div>
+
+
+           <div className="setup-box">
+             <h2>Impostazioni iniziali</h2>
+             <label>Saldo iniziale (€):
+               <input
+                 type="number"
+                 value={defaultSettings.balance}
+                 onChange={(e) =>
+                   setDefaultSettings({ ...defaultSettings, balance: e.target.value })
+                 }
+               />
+             </label>
+             <label>Modalità:
+               <select
+                 value={defaultSettings.mode}
+                 onChange={(e) =>
+                   setDefaultSettings({ ...defaultSettings, mode: e.target.value })
+                 }
+               >
+                 <option value="random">Casuale</option>
+                 <option value="win">Vincente</option>
+                 <option value="lose">Perdente</option>
+               </select>
+             </label>
+             <label>Costo giocata (€):
+               <input
+                 type="number"
+                 min="1"
+                 max="500"
+                 value={defaultSettings.cost}
+                 onChange={(e) =>
+                   setDefaultSettings({ ...defaultSettings, cost: e.target.value })
+                 }
+               />
+             </label>
+             <button onClick={handleStart}>Inizia</button>
+         </div>
+         </div>
+       );
+     }
 
   // RENDER: Schermata di gioco slot
   return (
