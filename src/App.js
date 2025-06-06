@@ -18,9 +18,9 @@ const symbols = Object.keys(symbolData); // Estrae tutti i simboli
 function App() {
   // Stati principali dell'app
   const [startScreen, setStartScreen] = useState(true); // Schermata iniziale attiva?
-  const [balance, setBalance] = useState(500); // Saldo del giocatore
+  const [balance, setBalance] = useState(200); // Saldo del giocatore
   const [defaultSettings, setDefaultSettings] = useState({
-    balance: 500,
+    balance: 200,
     mode: 'random',
     cost: 10,
   }); // Impostazioni iniziali
@@ -35,7 +35,7 @@ function App() {
   // Se il saldo scende a zero, ricaricalo automaticamente
   useEffect(() => {
     if (balance <= 0) {
-      setBalance(500);
+      setBalance(200);
     }
   }, [balance]);
 
@@ -127,7 +127,7 @@ function App() {
   // Torna alla schermata iniziale
   const handleReset = () => {
     setStartScreen(true);
-    setBalance(500);
+    setBalance(200);
     setSpinCost(10);
     setGameMode('random');
     setWinMessage('');
@@ -136,7 +136,7 @@ function App() {
 
   // Ricomincia la partita senza tornare alla schermata iniziale
   const handleRestart = () => {
-    setBalance(500);
+    setBalance(200);
     setSpinCost(10);
     setGameMode('random');
     setWinMessage('');
@@ -160,7 +160,7 @@ function App() {
         Premi <strong>“Inizia”</strong> senza modificare nulla. Verranno usate le impostazioni predefinite:
       </p>
    <ul>
-        <li>💰 Saldo iniziale: <strong>€500</strong></li>
+        <li>💰 Saldo iniziale: <strong>€200</strong></li>
         <li>🎲 Modalità: <strong>casuale</strong> (una vincita ogni due giocate)</li>
         <li>🎯 Costo per giocata: <strong>€10</strong>ogni volta che preme “SPIN”</li>
       </ul>
@@ -171,7 +171,7 @@ function App() {
         <li>🏆 Se escono 3 simboli uguali, vinci l’importo corrispondente (vedi legenda).</li>
         <li>🎰 In modalità casuale, ogni terza giocata è vincente.</li>
         <li>💹 Il saldo si aggiorna automaticamente dopo ogni giocata.</li>
-        <li>🔄 Se il saldo arriva a €0, viene ricaricato automaticamente a €500.</li>
+        <li>🔄 Se il saldo arriva a €0, viene ricaricato automaticamente a €200.</li>
       </ul>
 
       <h4>2. Prima di iniziare vuoi impostare i parametri manualmente?</h4>
@@ -190,7 +190,7 @@ function App() {
       <h4>3. Durante il gioco puoi usare:</h4>
       <ul>
         <li><strong>🔁 Indietro:</strong> torna alla schermata iniziale per impostare tutto da capo.</li>
-        <li><strong>♻️ Ricomincia Partita:</strong> ripristina i valori predefiniti (saldo €500, modalità casuale, costo €10) senza uscire dalla slot.</li>
+        <li><strong>♻️ Ricomincia Partita:</strong> ripristina i valori predefiniti (saldo €200, modalità casuale, costo €10) senza uscire dalla slot.</li>
       </ul>
     </div>
                      <h3>Legenda Vincite</h3>
@@ -244,7 +244,7 @@ function App() {
                <input
                  type="number"
                  min="1"
-                 max="500"
+                 max="200"
                  value={defaultSettings.cost}
                  onChange={(e) =>
                    setDefaultSettings({ ...defaultSettings, cost: e.target.value })

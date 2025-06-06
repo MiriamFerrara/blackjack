@@ -23,24 +23,11 @@ body {
 }
 
 .logo, .logo-start {
-  width: 200px;
+  width: 200px; /* o 280px, 300px, in base a quanto lo vuoi grande */
   margin-bottom: 20px;
+  transition: width 0.3s ease; /* opzionale: rende la modifica più fluida */
 }
 
-.slot-container {
-  border: 4px solid #07B5E2;
-  border-radius: 16px;
-  padding: 20px;
-  margin: 5px auto;
-  background-color: #00183A;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  width: 100%;
-  max-width: 400px;
-  min-width: 300px;
-  overflow: hidden;
-  margin-bottom: 50px;
-}
 
 .setup-box {
   background: rgba(0, 51, 102, 0.9);
@@ -148,19 +135,44 @@ body {
   opacity: 1;
 }
 
+/* 🔽 TESTO SALDO PIÙ GRANDE */
+.balance-row span:first-child {
+  font-size: 22px; /* o 24px se vuoi più grande */
+  font-weight: bold;
+}
 
+/* 🔽 TESTO MESSAGGIO DI VINCITA PIÙ GRANDE E COLORATO */
+.message span.show {
+  font-size: 20px;
+  font-weight: 500;
+}
 
 @keyframes fadeOut {
   0% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(-10px); }
 }
 
-
 .slot {
   display: flex;
   justify-content: center;
   margin: 20px 0;
   gap: 10px;
+  flex-wrap: nowrap;/* modifica qua */
+}
+
+.slot-container {
+  border: 4px solid #07B5E2;
+  border-radius: 16px;
+  margin: 5px auto;
+  background-color: #00183A;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  width: 100%;
+  max-width: 90vw;     /* Desktop: fino al 90% dello schermo */
+  min-width: 280px;    /* Mantiene leggibilità su piccoli schermi */
+  overflow: hidden;
+  margin-bottom: 50px;
+  padding: 24px;
 }
 
 .reel-box {
@@ -199,10 +211,10 @@ body {
 }
 
 .controls {
-  margin-top: 20px;
+  margin-top: 100px;
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .controls button {
@@ -211,7 +223,7 @@ body {
   border: none;
   background-color: #0066cc;
   color: white;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -291,12 +303,11 @@ body {
   }
 
   .slot-container {
-     padding: 24px;
-     margin: 10px auto;
-     min-width: 98vw;
-     max-width: 100vw;
-     transform: scale(1.2);
-    }
+    padding: 20px;
+    margin: 10px auto;
+    max-width: 95vw;    /* Mobile: quasi tutto lo schermo */
+    min-width: unset;   /* Rimuove larghezza minima su mobile */
+  }
 
   .setup-box,
   .message,
@@ -306,17 +317,24 @@ body {
     font-size: 14px;
   }
 
-  .reel-box {
-    width: 100px;
-    height: 100px;
-    font-size: 60px;
-  }
+ .slot {
+   flex-wrap: nowrap; /* impedisce l'andare a capo */
+   justify-content: center;
+ }
+
+ .reel-box {
+   width: 80px; /* ridotti leggermente */
+   height: 80px;
+   font-size: 48px;
+ }
+
 
   .spin-btn {
    padding: 16px 80px;
      font-size: 24px;
      min-width: 80%;
      max-width: 90%;
+       width: 90%;
 
   }
 
@@ -324,7 +342,7 @@ body {
     margin-top: 80px; /* aumenta lo spazio sopra i pulsanti */
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 10px;
   }
 
   .controls button {
@@ -333,7 +351,7 @@ body {
   }
 
   .logo, .logo-start {
-    width: 150px;
+    width: 220px; /* oppure 240px o quanto desideri */
   }
 
   .setup-box input,
