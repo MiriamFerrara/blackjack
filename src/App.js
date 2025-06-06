@@ -162,7 +162,7 @@ function App() {
    <ul>
         <li>💰 Saldo iniziale: <strong>€200</strong></li>
         <li>🎲 Modalità: <strong>casuale</strong> (una vincita ogni due giocate)</li>
-        <li>🎯 Costo per giocata: <strong>€10</strong>ogni volta che preme “SPIN”</li>
+        <li>🎯 Costo per giocata: <strong>€10</strong> ogni volta che preme “SPIN”</li>
       </ul>
 
       <h4><strong>Cosa succede dopo:</strong></h4>
