@@ -211,7 +211,6 @@ body {
 }
 
 .controls {
-  margin-top: 300px;
   display: flex;
   justify-content: center;
   gap: 10px;
@@ -339,7 +338,7 @@ body {
   }
 
   .controls {
-    margin-top: 80px; /* aumenta lo spazio sopra i pulsanti */
+    margin-top: 180px; /* aumenta lo spazio sopra i pulsanti */
     display: flex;
     justify-content: center;
     gap: 10px;

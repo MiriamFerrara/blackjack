@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import logo from './image/logo-slot-b.png';
 
@@ -39,6 +39,7 @@ function App() {
     }
   }, [balance]);
 
+
   // Avvio del gioco: imposta configurazione iniziale
   const handleStart = () => {
     setBalance(parseInt(defaultSettings.balance));
@@ -54,23 +55,35 @@ function App() {
     setReelSymbols([shuffled[0], shuffled[1], shuffled[2]]);
   };
 
-  // Funzione principale per far girare il rullo
-  const handleSpin = () => {
-    if (spinning || balance < spinCost) return; // Evita doppie giocate o saldo insufficiente
-    setSpinning(true);
-    setBalance(prev => prev - spinCost); // Scala il costo della giocata
-    setCostMessage(`-${spinCost}€`);
-    setTimeout(() => setCostMessage(''), 1000); // Nasconde il messaggio dopo 1 sec
-    setWinMessage('');
+// Funzione principale per far girare il rullo
+const handleSpin = useCallback(() => {
+  if (spinning || balance < spinCost) return;
+  setSpinning(true);
+  setBalance(prev => prev - spinCost);
+  setCostMessage(`-${spinCost}€`);
+  setTimeout(() => setCostMessage(''), 1000);
+  setWinMessage('');
 
-    // Prepara i simboli finali da mostrare alla fine dell'animazione
-    let finalSymbols = [symbols[0], symbols[0], symbols[0]];
+  let finalSymbols = [symbols[0], symbols[0], symbols[0]];
 
-    // Logica per modalità vincente, perdente, casuale
-    if (gameMode === 'win') {
-      const rarest = symbols[symbols.length - 1];
-      finalSymbols = [rarest, rarest, rarest];
-    } else if (gameMode === 'lose') {
+  if (gameMode === 'win') {
+    const rarest = symbols[symbols.length - 1];
+    finalSymbols = [rarest, rarest, rarest];
+  } else if (gameMode === 'lose') {
+    let shuffled = [...symbols].sort(() => 0.5 - Math.random());
+    while (
+      shuffled[0] === shuffled[1] ||
+      shuffled[1] === shuffled[2] ||
+      shuffled[0] === shuffled[2]
+    ) {
+      shuffled = [...symbols].sort(() => 0.5 - Math.random());
+    }
+    finalSymbols = [shuffled[0], shuffled[1], shuffled[2]];
+  } else {
+    if (randomSpinCount % 3 === 0) {
+      const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+      finalSymbols = [symbol, symbol, symbol];
+    } else {
       let shuffled = [...symbols].sort(() => 0.5 - Math.random());
       while (
         shuffled[0] === shuffled[1] ||
@@ -80,49 +93,46 @@ function App() {
         shuffled = [...symbols].sort(() => 0.5 - Math.random());
       }
       finalSymbols = [shuffled[0], shuffled[1], shuffled[2]];
-    } else {
-      // Modalità casuale: ogni 3° giocata è vincente
-      if (randomSpinCount % 3 === 0) {
-        const symbol = symbols[Math.floor(Math.random() * symbols.length)];
-        finalSymbols = [symbol, symbol, symbol];
-      } else {
-        let shuffled = [...symbols].sort(() => 0.5 - Math.random());
-        while (
-          shuffled[0] === shuffled[1] ||
-          shuffled[1] === shuffled[2] ||
-          shuffled[0] === shuffled[2]
-        ) {
-          shuffled = [...symbols].sort(() => 0.5 - Math.random());
-        }
-        finalSymbols = [shuffled[0], shuffled[1], shuffled[2]];
-      }
-      setRandomSpinCount(prev => prev + 1);
     }
+    setRandomSpinCount(prev => prev + 1);
+  }
 
-    // Animazione del rullo: cambia simboli per 10 frame
-    let frame = 0;
-    const interval = setInterval(() => {
-      setReelSymbols([
-        symbols[Math.floor(Math.random() * symbols.length)],
-        symbols[Math.floor(Math.random() * symbols.length)],
-        symbols[Math.floor(Math.random() * symbols.length)],
-      ]);
-      frame++;
-      if (frame > 10) {
-        clearInterval(interval);
-        setReelSymbols(finalSymbols);
+  let frame = 0;
+  const interval = setInterval(() => {
+    setReelSymbols([
+      symbols[Math.floor(Math.random() * symbols.length)],
+      symbols[Math.floor(Math.random() * symbols.length)],
+      symbols[Math.floor(Math.random() * symbols.length)],
+    ]);
+    frame++;
+    if (frame > 10) {
+      clearInterval(interval);
+      setReelSymbols(finalSymbols);
 
-        // Se tutti i simboli sono uguali, calcola la vincita
-        if (finalSymbols.every(sym => sym === finalSymbols[0])) {
-          const prize = symbolData[finalSymbols[0]].prize;
-          setBalance(prev => prev + prize);
-          setWinMessage(`Hai vinto! +${prize}€`);
-        }
-
-        setSpinning(false);
+      if (finalSymbols.every(sym => sym === finalSymbols[0])) {
+        const prize = symbolData[finalSymbols[0]].prize;
+        setBalance(prev => prev + prize);
+        setWinMessage(`Hai vinto! +${prize}€`);
       }
-    }, 100); // velocità animazione
+
+      setSpinning(false);
+    }
+  }, 100);
+}, [spinning, balance, spinCost, gameMode, randomSpinCount]);
+
+useEffect(() => {
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSpin();
+    }
   };
+
+  window.addEventListener('keydown', handleKeyPress);
+  return () => {
+    window.removeEventListener('keydown', handleKeyPress);
+  };
+}, [handleSpin]);
+
 
   // Torna alla schermata iniziale
   const handleReset = () => {
