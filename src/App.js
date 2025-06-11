@@ -108,7 +108,7 @@ function App() {
           // CHIAMARE LA FUNZIONE DESIDERATA QUI:
           // Se vuoi monete su tutto il body: triggerCoinRainBody();
           // Se vuoi monete solo nella slot: triggerCoinRainSlot();
-          triggerCoinRainSlot(); // <<< Attualmente chiama la versione a pagina intera
+          triggerCoinRainBody(); // <<< Attualmente chiama la versione a pagina intera
         }
 
         setSpinning(false); // Imposta lo stato di giro su false (rulli fermi)
@@ -179,10 +179,10 @@ function App() {
     setReelSymbols([shuffled[0], shuffled[1], shuffled[2]]);
   };
  // --- Funzioni per la cascata di monete ---
-/*
+
   // Funzione per creare la cascata di monete su tutta la pagina (migliorata per realismo)
   const triggerCoinRainBody = () => {
-    for (let i = 0; i < 60; i++) { // Numero di monete per un effetto pieno
+    for (let i = 0; i < 180; i++) { // Numero di monete per un effetto pieno
       const coin = document.createElement('div');
       coin.className = 'coin-body'; // Assegna la classe CSS 'coin-body'
 
@@ -210,8 +210,9 @@ function App() {
         coin.remove();
       }, (animationDuration + animationDelay) * 1000 + 1000);
     }
-  };*/
+  };
 
+/*
   // Funzione per creare la cascata di monete SOLO all'interno della slot
   const triggerCoinRainSlot = () => {
     for (let i = 0; i < 60; i++) { // Numero di monete per un effetto pieno
@@ -246,7 +247,7 @@ function App() {
       }, (animationDuration + animationDelay) * 1000 + 1000);
     }
   };
-
+*/
 
 
   // Render condizionale: mostra la schermata iniziale o la schermata di gioco
