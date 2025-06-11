@@ -140,7 +140,7 @@ function App() {
   // Effetto per gestire l'event listener del tasto Enter (per spin)
   useEffect(() => {
     const handleKeyPress = (event) => {
-      if (event.key === 'Enter') {
+      if (event.key === 'Enter' || event.key === ' ') {
         // Chiama la funzione handleSpin tramite il suo riferimento
         if (handleSpinRef.current) {
           handleSpinRef.current();
