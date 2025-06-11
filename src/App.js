@@ -35,7 +35,7 @@ function App() {
 
   // Riferimenti per elementi DOM o funzioni
   const slotRef = useRef(null); // Riferimento al contenitore della slot
-  const handleSpinRef = useRef(null); // Riferimento alla funzione handleSpin per l'event listener del tasto Enter
+  const handleSpinRef = useRef(null);
 
   // Effetto per ricaricare il saldo a 200€ se scende a zero o meno
   useEffect(() => {
@@ -44,12 +44,26 @@ function App() {
     }
   }, [balance]); // Si attiva ogni volta che il saldo cambia
 
+  // NEW: Funzione per rimuovere tutte le monete dal DOM
+  const clearCoins = useCallback(() => {
+    // Se le monete sono generate sul body:
+    const existingCoins = document.querySelectorAll('.coin-body');
+    existingCoins.forEach(coin => coin.remove());
+
+    // Se avessi usato anche coin-slot (non attivo nel tuo codice ma per completezza):
+    // const existingSlotCoins = document.querySelectorAll('.coin-slot');
+    // existingSlotCoins.forEach(coin => coin.remove());
+  }, []); // Nessuna dipendenza, in quanto non accede a stati o prop che cambiano.
+
   // Funzione principale per far girare i rulli della slot
   const handleSpin = useCallback(() => {
     // Impedisce di far girare i rulli se sono già in movimento o il saldo è insufficiente
     if (spinning || balance < spinCost) {
       return;
     }
+
+    // NEW: Rimuovi le monete esistenti all'inizio di un nuovo spin
+    clearCoins();
 
     setSpinning(true); // Imposta lo stato di giro su true
     setBalance(prev => prev - spinCost); // Deduce il costo dello spin dal saldo
@@ -105,25 +119,24 @@ function App() {
           const prize = symbolData[finalSymbols[0]].prize; // Ottiene il valore del premio
           setBalance(prev => prev + prize); // Aggiunge il premio al saldo
           setWinMessage(`Hai vinto! +${prize}€`); // Mostra il messaggio di vincita
-          // CHIAMARE LA FUNZIONE DESIDERATA QUI:
-          // Se vuoi monete su tutto il body: triggerCoinRainBody();
-          // Se vuoi monete solo nella slot: triggerCoinRainSlot();
           triggerCoinRainBody(); // <<< Attualmente chiama la versione a pagina intera
+        } else {
+          // NEW: Se non c'è una vincita, assicurati che non ci siano monete residue
+          clearCoins();
         }
 
         setSpinning(false); // Imposta lo stato di giro su false (rulli fermi)
       }
     }, 100); // Aggiorna i simboli ogni 100ms
-  }, [spinning, balance, spinCost, gameMode, randomSpinCount]); // Dipendenze per useCallback
+  }, [spinning, balance, spinCost, gameMode, randomSpinCount, clearCoins]); // Aggiunta clearCoins nelle dipendenze per useCallback
 
   // Sincronizza la funzione handleSpin con il suo riferimento useRef
-  // Questo assicura che l'event listener del tasto Enter chiami sempre l'ultima versione di handleSpin
   useEffect(() => {
     handleSpinRef.current = handleSpin;
   }, [handleSpin]);
 
   // Gestore per l'avvio del gioco dalla schermata iniziale
-  const handleStart = () => {
+  const handleStart = useCallback(() => {
     setBalance(parseInt(defaultSettings.balance)); // Imposta il saldo iniziale
     setGameMode(defaultSettings.mode); // Imposta la modalità di gioco
     setSpinCost(parseInt(defaultSettings.cost)); // Imposta il costo dello spin
@@ -135,41 +148,31 @@ function App() {
       shuffled = [...symbols].sort(() => 0.5 - Math.random());
     }
     setReelSymbols([shuffled[0], shuffled[1], shuffled[2]]);
-  };
-
-  // Effetto per gestire l'event listener del tasto Enter (per spin)
-  useEffect(() => {
-    const handleKeyPress = (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        // Chiama la funzione handleSpin tramite il suo riferimento
-        if (handleSpinRef.current) {
-          handleSpinRef.current();
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress); // Aggiunge l'event listener al window
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress); // Rimuove l'event listener alla smontatura del componente
-    };
-  }, [handleSpin]); // Dipende da handleSpin per assicurare il riferimento corretto
+  }, [defaultSettings]);
 
   // Gestore per tornare alla schermata iniziale e resettare lo stato del gioco
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setStartScreen(true);
     setBalance(200);
     setSpinCost(10);
     setGameMode('random');
     setWinMessage('');
     setRandomSpinCount(0);
-  };
+    setDefaultSettings({ // Reset default settings as well when going back
+      balance: 200,
+      mode: 'random',
+      cost: 10,
+    });
+    clearCoins(); // NEW: Rimuovi le monete anche al reset
+  }, [clearCoins]); // Aggiunta clearCoins nelle dipendenze
 
   // Gestore per ricominciare la partita con le impostazioni predefinite (senza tornare alla schermata iniziale)
-  const handleRestart = () => {
+  const handleRestart = useCallback(() => {
     setBalance(200);
     setSpinCost(10);
     setGameMode('random');
     setWinMessage('');
+    setRandomSpinCount(0); // Reset random spin count on restart
 
     // Reimposta 3 simboli casuali e diversi tra loro per il nuovo avvio
     let shuffled = [...symbols].sort(() => 0.5 - Math.random());
@@ -177,11 +180,15 @@ function App() {
       shuffled = [...symbols].sort(() => 0.5 - Math.random());
     }
     setReelSymbols([shuffled[0], shuffled[1], shuffled[2]]);
-  };
+    clearCoins(); // NEW: Rimuovi le monete anche al riavvio
+  }, [clearCoins]); // Aggiunta clearCoins nelle dipendenze
+
  // --- Funzioni per la cascata di monete ---
 
   // Funzione per creare la cascata di monete su tutta la pagina (migliorata per realismo)
   const triggerCoinRainBody = () => {
+    // Nota: questa funzione crea le monete, non le gestisce la rimozione.
+    // La rimozione è ora gestita da clearCoins() chiamata in handleSpin, handleReset, handleRestart.
     for (let i = 0; i < 180; i++) { // Numero di monete per un effetto pieno
       const coin = document.createElement('div');
       coin.className = 'coin-body'; // Assegna la classe CSS 'coin-body'
@@ -206,49 +213,49 @@ function App() {
       document.body.appendChild(coin);
 
       // Rimuovi la moneta dal DOM dopo che l'animazione è terminata, più un margine di tempo
+      // Questo setTimeout rimane, ma clearCoins() è il meccanismo primario per la rimozione forzata
       setTimeout(() => {
-        coin.remove();
+        // Controlla se la moneta esiste ancora prima di rimuovere, in caso sia già stata rimossa da clearCoins
+        if (coin.parentNode) {
+            coin.remove();
+        }
       }, (animationDuration + animationDelay) * 1000 + 1000);
     }
   };
 
-/*
-  // Funzione per creare la cascata di monete SOLO all'interno della slot
-  const triggerCoinRainSlot = () => {
-    for (let i = 0; i < 60; i++) { // Numero di monete per un effetto pieno
-      const coin = document.createElement('div');
-      coin.className = 'coin-slot'; // Assegna la classe CSS 'coin-slot'
-
-      // Variazione di dimensione casuale per un effetto più realistico
-      const size = Math.random() * 20 + 30; // Monete da 30px a 50px (AUMENTATO)
-      coin.style.width = `${size}px`;
-      coin.style.height = `${size}px`;
-      // Partono da sopra il contenitore della slot, in base alla loro dimensione
-      coin.style.top = `-${size}px`;
-
-      // Posizione orizzontale casuale, ma relativa alla larghezza del contenitore della slot
-      // Usiamo Math.random() * 90% per evitare che escano troppo dai bordi
-      coin.style.left = `${Math.random() * 90}%`;
-
-      // Durata e ritardo dell'animazione casuali per variare la caduta (più brevi per uno spazio più piccolo)
-      const animationDuration = Math.random() * 1 + 1.5; // Da 1.5s a 2.5s (AUMENTATO)
-      const animationDelay = Math.random() * 0.8; // Ritardo iniziale fino a 0.8s (AUMENTATO)
-      coin.style.animationDuration = `${animationDuration}s`;
-      coin.style.animationDelay = `${animationDelay}s`;
-
-      // Aggiungi la moneta al slotRef.current (il contenitore della slot)
-      if (slotRef.current) {
-        slotRef.current.appendChild(coin);
+  // Effetto per gestire gli eventi della tastiera (Enter, Spacebar, R)
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      // Prevent default behavior for spacebar to avoid scrolling
+      if (event.key === ' ') {
+        event.preventDefault();
       }
 
-      // Rimuovi la moneta dal DOM dopo che l'animazione è terminata, più un margine di tempo
-      setTimeout(() => {
-        coin.remove();
-      }, (animationDuration + animationDelay) * 1000 + 1000);
-    }
-  };
-*/
+      // If on the start screen
+      if (startScreen) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          // Trigger the start game function
+          handleStart();
+        }
+      } else { // If in the game screen
+        if (event.key === 'Enter' || event.key === ' ') {
+          // Trigger the spin function using the ref to ensure it's the latest version
+          if (handleSpinRef.current) {
+            handleSpinRef.current();
+          }
+        } else if (event.key === 'r' || event.key === 'R') {
+          // Trigger the restart game function
+          handleRestart();
+        }
+      }
+    };
 
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [startScreen, handleStart, handleSpin, handleRestart]);
 
   // Render condizionale: mostra la schermata iniziale o la schermata di gioco
   if (startScreen) {
@@ -294,6 +301,7 @@ function App() {
             <ul>
               <li><strong>🔁 Indietro:</strong> torna alla schermata iniziale per impostare tutto da capo.</li>
               <li><strong>♻️ Ricomincia Partita:</strong> ripristina i valori predefiniti (saldo €200, modalità casuale, costo €10) senza uscire dalla slot.</li>
+              <li><strong>⌨️ Tasti rapidi:</strong> Puoi usare <strong>"Invio"</strong> o <strong>"Spazio"</strong> per avviare il gioco o per fare lo spin, e <strong>"R"</strong> per ricomincia la partita.</li>
             </ul>
           </div>
           <h3>Legenda Vincite</h3>
